@@ -33,16 +33,16 @@ public class WorkoutEntity : IEntityBase
         return Result.Success();
     }
     #region SessionExercises
-    public Result AddSessionExercise(int exerciseId)
+    public Result<SessionExerciseEntity> AddSessionExercise(int exerciseId)
     {
         if (IsCompleted)
-            return Result.Failure(ErrorType.InvalidOperation, "Cannot change completed workout");
+            return Result<SessionExerciseEntity>.Failure(ErrorType.InvalidOperation, "Cannot change completed workout");
 
         int maxOrder = SessionExercises.Count() > 0 ? SessionExercises.Max(s => s.Order) : 0;
         var sessionExercise = new SessionExerciseEntity(exerciseId, ++maxOrder);
 
         SessionExercises.Add(sessionExercise);
-        return Result.Success();
+        return Result<SessionExerciseEntity>.Success(sessionExercise);
     }
     public Result RemoveSessionExercise(int sessionExerciseId)
     {
@@ -69,6 +69,14 @@ public class WorkoutEntity : IEntityBase
         sessionExercise.AddSet(weight, reps);
         return Result.Success();
 
+    }
+    public Result AddSet(SessionExerciseEntity sessionExercise, int weight, int reps)
+    {
+        if (IsCompleted)
+            return Result.Failure(ErrorType.InvalidOperation, "Cannot change completed workout");
+
+        sessionExercise.AddSet(weight, reps);
+        return Result.Success();
     }
     public Result UpdateSet(int setId, int weight, int reps)
     {

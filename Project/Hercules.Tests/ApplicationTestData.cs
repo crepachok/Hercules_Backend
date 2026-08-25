@@ -123,6 +123,45 @@ internal static partial class TestData
 
         return request;
     }
+    internal static WorkoutRequest GetWorkoutRequest(IEnumerable<int> exerciseIds, bool isCompleted = true, bool hasSessionExercises = true, bool hasSets = true)
+    {
+        var request = new WorkoutRequest();
+
+        if (hasSessionExercises)
+        {
+            var sessionExercises = new List<SessionExerciseRequest>();
+            foreach (int exerciseId in exerciseIds)
+                sessionExercises.Add(GetSessionExerciseRequest(exerciseId, hasSets));
+            
+            typeof(WorkoutRequest).GetProperty(nameof(request.SessionExercises))!
+                .SetValue(request, sessionExercises); 
+        }
+
+        typeof(WorkoutRequest).GetProperty(nameof(request.StartTime))!
+            .SetValue(request, DateTimeOffset.UtcNow.AddMinutes(-30));
+
+        if (isCompleted)
+            typeof(WorkoutRequest).GetProperty(nameof(request.EndTime))!
+                .SetValue(request, DateTimeOffset.UtcNow);
+
+        return request;
+    }
+    private static SessionExerciseRequest GetSessionExerciseRequest(int exerciseId, bool hasSets = true)
+    {
+        var request = new SessionExerciseRequest();
+
+        if (hasSets)
+        {
+            var sets = new SetRequest[] { GetSetRequest(50, 50) };
+            typeof(SessionExerciseRequest).GetProperty(nameof(request.Sets))!
+                .SetValue(request, sets);
+        }
+
+        typeof(SessionExerciseRequest).GetProperty(nameof(request.ExerciseId))!
+            .SetValue(request, exerciseId);
+
+        return request;
+    }
     internal static SetRequest GetSetRequest(int weight, int reps)
     {
         if (!weight.IsBetween(SetEntity.MinWeight, SetEntity.MaxWeight))

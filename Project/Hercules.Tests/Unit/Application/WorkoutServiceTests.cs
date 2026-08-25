@@ -60,6 +60,90 @@ public class WorkoutServiceTests
     }
 
     [Fact]
+    public async Task Post_MissingIds_ReturnsNotFound()
+    {
+        //Arrange
+        int[] ids = new int[] {1, 2, 3, 4};
+        var request = TestData.GetWorkoutRequest(ids, true);
+
+        _eRepo.Setup(r => r.Get(ids))
+            .ReturnsAsync(TestData.GetExercises().ToArray());
+        _user.Setup(u => u.UserId)
+            .Returns(1);
+
+        //Act
+        var result = await _service.Post(request);
+
+        //Assert
+        result.IsFailure.Should().BeTrue();
+        result.ErrorType.Should().Be(ErrorType.NotFound);
+        _wRepo.Verify(r => r.Post(It.IsAny<WorkoutEntity>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Post_Valid_PostsWorkout()
+    {
+        //Arrange
+        int[] ids = new int[] {1, 2, 3};
+        var request = TestData.GetWorkoutRequest(ids, true);
+
+        _eRepo.Setup(r => r.Get(ids))
+            .ReturnsAsync(TestData.GetExercises().ToArray());
+        _user.Setup(u => u.UserId)
+            .Returns(1);
+
+        //Act
+        var result = await _service.Post(request);
+
+        //Assert
+        result.IsSuccess.Should().BeTrue();
+        result.ErrorType.Should().Be(ErrorType.None);
+        _wRepo.Verify(r => r.Post(It.IsAny<WorkoutEntity>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task PostCompleted_HasEmptySessionExercises_ReturnsFailure()
+    {
+        //Arrange
+        int[] ids = new int[] {1, 2, 3};
+        var request = TestData.GetWorkoutRequest(ids, hasSets: false);
+
+        _eRepo.Setup(r => r.Get(ids))
+            .ReturnsAsync(TestData.GetExercises().ToArray());
+        _user.Setup(u => u.UserId)
+            .Returns(1);
+
+        //Act
+        var result = await _service.Post(request);
+
+        //Assert
+        result.IsFailure.Should().BeTrue();
+        result.ErrorType.Should().Be(ErrorType.InvalidOperation);
+        _wRepo.Verify(r => r.Post(It.IsAny<WorkoutEntity>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task PostCompleted_HasNoSessionExercises_ReturnsFailure()
+    {
+        //Arrange
+        int[] ids = new int[] {1, 2, 3};
+        var request = TestData.GetWorkoutRequest(ids, hasSessionExercises: false);
+
+        _eRepo.Setup(r => r.Get(ids))
+            .ReturnsAsync(TestData.GetExercises().ToArray());
+        _user.Setup(u => u.UserId)
+            .Returns(1);
+
+        //Act
+        var result = await _service.Post(request);
+
+        //Assert
+        result.IsFailure.Should().BeTrue();
+        result.ErrorType.Should().Be(ErrorType.InvalidOperation);
+        _wRepo.Verify(r => r.Post(It.IsAny<WorkoutEntity>()), Times.Never);
+    }
+
+    [Fact]
     public async Task Start_Valid_PostsWorkout()
     {
         var request = TestData.GetDateTimeRequest(DateTimeOffset.Now);

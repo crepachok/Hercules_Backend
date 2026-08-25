@@ -31,6 +31,16 @@ public class WorkoutsController : ControllerBase
         return Ok(result.Value);
     }
 
+    [HttpPost("post")]
+    public async Task<IActionResult> Post([FromBody] WorkoutRequest request)
+    {
+        var result = await _wService.Post(request);
+        if (result.IsFailure)
+            return this.HandleErrorResult(result);
+
+        return Created();
+    }
+
     [HttpPost("start")]
     public async Task<IActionResult> Start([FromBody] DateTimeRequest time)
     {

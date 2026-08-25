@@ -4,6 +4,8 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using System.Net;
 using System.Text.Json;
+
+namespace Integration;
 public class WorkoutIntegrationTests : IClassFixture<IntegrationTestsFixture>
 {
     private IntegrationTestsFixture _fixture = null!;

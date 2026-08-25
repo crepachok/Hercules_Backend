@@ -4,6 +4,8 @@ using Xunit;
 using Xunit.Abstractions;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
+
+namespace Integration;
 public class UserGuestIntegrationTests : IClassFixture<IntegrationTestsFixture>, IAsyncLifetime
 {
     private IntegrationTestsFixture _fixture;

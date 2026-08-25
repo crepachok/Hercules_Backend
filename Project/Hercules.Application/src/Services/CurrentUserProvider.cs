@@ -3,7 +3,7 @@ using System.Security.Claims;
 public class CurrentUserProvider : ICurrentUser
 {
     public ClaimsPrincipal User { get; init; }
-    public int UserId {
+    public virtual int UserId {
         get
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier);

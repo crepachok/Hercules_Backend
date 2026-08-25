@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Reflection;
 
 public sealed class WorkoutService : ServiceBase
 {
@@ -35,6 +37,45 @@ public sealed class WorkoutService : ServiceBase
 
         var workout = new WorkoutEntity(userId, time.DateTime);
         await _wRepo.Post(workout);
+    }
+    public async Task<Result> Post(WorkoutRequest request)
+    {
+        int userId = _user.UserId;
+        var workout = new WorkoutEntity(userId, request.StartTime);
+
+        int[] requestIds = request.SessionExercises.Select(se => se.ExerciseId).ToArray();
+        int[] realIds = (await _eRepo.Get(requestIds)).Select(e => e.Id).ToArray();
+
+        int[] missingIds = requestIds.Where(id => !realIds.Contains(id)).ToArray();
+        if (missingIds.Length > 0)
+            return Result.Failure(ErrorType.NotFound, $"Cannot find exercises with ids: {string.Join(", ", missingIds)}");
+
+        // ПРОВЕРКИ В ЭТИХ ЦИКЛАХ НА ВСЯКИЙ СЛУЧАЙ, ЕСЛИ ПОЯВЯТСЯ ДРУГИЕ ВОЗНОЖНОСТИ ПОЛУЧИТЬ FAILURE
+        foreach (var se in request.SessionExercises)
+        {
+            var addSessionResult = workout.AddSessionExercise(se.ExerciseId);
+            if (addSessionResult.IsFailure)
+                    return addSessionResult;
+
+            var sessionExercise = addSessionResult.Value;
+
+            foreach (var set in se.Sets)
+            {
+                var addSetResult = workout.AddSet(sessionExercise, set.Weight, set.Reps);
+                if (addSetResult.IsFailure)
+                    return addSetResult;
+            }
+        }
+
+        if (request.EndTime.HasValue)
+        {
+            var completeResult = workout.Complete(request.EndTime.Value);
+            if (completeResult.IsFailure)
+                return completeResult;
+        }
+
+        await _wRepo.Post(workout);
+        return Result.Success();
     }
     public async Task<Result> Complete(int workoutId, DateTimeRequest time)
     {

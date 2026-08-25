@@ -1,10 +1,8 @@
 {
   "info": {
-    "_postman_id": "ae5f8502-3432-4ef6-9810-2b60e07b277f",
-    "name": "Hercules",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "46665811",
-    "_collection_link": "https://go.postman.co/collection/46665811-ae5f8502-3432-4ef6-9810-2b60e07b277f?source=collection_link"
+    "name": "Hercules - 1",
+    "description": null,
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
@@ -16,31 +14,47 @@
             {
               "name": "GetSelf",
               "request": {
+                "method": "GET",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "GET",
-                "header": [],
+                "description": "",
                 "url": {
                   "raw": "{{UsersRoute}}/get-self",
+                  "protocol": "",
                   "host": [
                     "{{UsersRoute}}"
                   ],
                   "path": [
                     "get-self"
-                  ]
+                  ],
+                  "query": [],
+                  "variable": []
                 }
-              },
-              "response": []
+              }
             },
             {
               "name": "ChangePassword",
               "request": {
+                "method": "PATCH",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "PATCH",
-                "header": [],
+                "description": "",
+                "url": {
+                  "raw": "{{UsersRoute}}/change-pass",
+                  "protocol": "",
+                  "host": [
+                    "{{UsersRoute}}"
+                  ],
+                  "path": [
+                    "change-pass"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"Password\": \"1234pass\"\n}",
@@ -49,27 +63,30 @@
                       "language": "json"
                     }
                   }
-                },
-                "url": {
-                  "raw": "{{UsersRoute}}/change-pass",
-                  "host": [
-                    "{{UsersRoute}}"
-                  ],
-                  "path": [
-                    "change-pass"
-                  ]
                 }
-              },
-              "response": []
+              }
             },
             {
               "name": "ChangeUsername",
               "request": {
+                "method": "PATCH",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "PATCH",
-                "header": [],
+                "description": "",
+                "url": {
+                  "raw": "{{UsersRoute}}/change-name",
+                  "protocol": "",
+                  "host": [
+                    "{{UsersRoute}}"
+                  ],
+                  "path": [
+                    "change-name"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"Username\": \"\"\n}",
@@ -78,18 +95,8 @@
                       "language": "json"
                     }
                   }
-                },
-                "url": {
-                  "raw": "{{UsersRoute}}/change-name",
-                  "host": [
-                    "{{UsersRoute}}"
-                  ],
-                  "path": [
-                    "change-name"
-                  ]
                 }
-              },
-              "response": []
+              }
             }
           ]
         },
@@ -99,96 +106,104 @@
             {
               "name": "Delete",
               "request": {
+                "method": "DELETE",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "DELETE",
-                "header": [],
+                "description": "",
                 "url": {
                   "raw": "{{UsersRoute}}/delete?userId=",
+                  "protocol": "",
                   "host": [
                     "{{UsersRoute}}"
                   ],
                   "path": [
-                    "delete"
+                    "delete?userId="
                   ],
                   "query": [
                     {
                       "key": "userId",
                       "value": ""
                     }
-                  ]
+                  ],
+                  "variable": []
                 }
-              },
-              "response": []
+              }
             },
             {
               "name": "GetByUsername",
               "request": {
+                "method": "GET",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "GET",
-                "header": [],
+                "description": "",
                 "url": {
                   "raw": "{{UsersRoute}}/get-by-username?Username=",
+                  "protocol": "",
                   "host": [
                     "{{UsersRoute}}"
                   ],
                   "path": [
-                    "get-by-username"
+                    "get-by-username?Username="
                   ],
                   "query": [
                     {
                       "key": "Username",
                       "value": ""
                     }
-                  ]
+                  ],
+                  "variable": []
                 }
-              },
-              "response": []
+              }
             },
             {
               "name": "GetById",
               "request": {
+                "method": "GET",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "GET",
-                "header": [],
+                "description": "",
                 "url": {
                   "raw": "{{UsersRoute}}/get-by-id?userId=",
+                  "protocol": "",
                   "host": [
                     "{{UsersRoute}}"
                   ],
                   "path": [
-                    "get-by-id"
+                    "get-by-id?userId="
                   ],
                   "query": [
                     {
                       "key": "userId",
                       "value": ""
                     }
-                  ]
+                  ],
+                  "variable": []
                 }
-              },
-              "response": []
+              }
             },
             {
               "name": "ChangePrivilege",
               "request": {
+                "method": "PATCH",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "PATCH",
-                "header": [],
+                "description": "",
                 "url": {
                   "raw": "{{UsersRoute}}/change-privilege?userId=&privilege=",
+                  "protocol": "",
                   "host": [
                     "{{UsersRoute}}"
                   ],
                   "path": [
-                    "change-privilege"
+                    "change-privilege?userId=&privilege="
                   ],
                   "query": [
                     {
@@ -199,27 +214,29 @@
                       "key": "privilege",
                       "value": ""
                     }
-                  ]
+                  ],
+                  "variable": []
                 }
-              },
-              "response": []
+              }
             },
             {
               "name": "Admin ChangePass",
               "request": {
+                "method": "PATCH",
+                "header": [],
                 "auth": {
                   "type": "noauth"
                 },
-                "method": "PATCH",
-                "header": [],
+                "description": "",
                 "url": {
                   "raw": "{{UsersRoute}}/admin/change-pass?userId=&Password=",
+                  "protocol": "",
                   "host": [
                     "{{UsersRoute}}"
                   ],
                   "path": [
                     "admin",
-                    "change-pass"
+                    "change-pass?userId=&Password="
                   ],
                   "query": [
                     {
@@ -230,70 +247,76 @@
                       "key": "Password",
                       "value": ""
                     }
-                  ]
+                  ],
+                  "variable": []
                 }
-              },
-              "response": []
+              }
             }
           ]
         },
         {
           "name": "Register",
           "request": {
+            "method": "POST",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"Username\": \"\",\n  \"Password\": \"\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "description": "",
             "url": {
               "raw": "{{UsersRoute}}/register",
+              "protocol": "",
               "host": [
                 "{{UsersRoute}}"
               ],
               "path": [
                 "register"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Login",
-          "request": {
-            "auth": {
-              "type": "noauth"
+              ],
+              "query": [],
+              "variable": []
             },
-            "method": "POST",
-            "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"Username\": \"\",\n  \"Password\": \"\"\n}",
+              "raw": "{\n  \"Username\": \"creepak\",\n  \"Password\": \"123pass\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "noauth"
             },
+            "description": "",
             "url": {
               "raw": "{{UsersRoute}}/login",
+              "protocol": "",
               "host": [
                 "{{UsersRoute}}"
               ],
               "path": [
                 "login"
-              ]
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Username\": \"creepak\",\n  \"Password\": \"123pass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -303,38 +326,43 @@
         {
           "name": "GetAll",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{WorkoutsRoute}}/get-all",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
                 "get-all"
-              ]
+              ],
+              "query": [],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "GetAllFiltered",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{WorkoutsRoute}}/get-all-filtered?DateFrom=2022-08-01T14:30:00+03:00&DateTo=2027-08-01T14:30:00+03:00",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
-                "get-all-filtered"
+                "get-all-filtered?DateFrom=2022-08-01T14:30:00+03:00&DateTo=2027-08-01T14:30:00+03:00"
               ],
               "query": [
                 {
@@ -345,45 +373,60 @@
                   "key": "DateTo",
                   "value": "2027-08-01T14:30:00+03:00"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "GetById",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
-              "raw": "{{WorkoutsRoute}}/get?workoutId=1",
+              "raw": "{{WorkoutsRoute}}/get?workoutId=2",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
-                "get"
+                "get?workoutId=2"
               ],
               "query": [
                 {
                   "key": "workoutId",
-                  "value": "1"
+                  "value": "2"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Start",
           "request": {
+            "method": "POST",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "POST",
-            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{WorkoutsRoute}}/start",
+              "protocol": "",
+              "host": [
+                "{{WorkoutsRoute}}"
+              ],
+              "path": [
+                "start"
+              ],
+              "query": [],
+              "variable": []
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"DateTime\": \"2026-08-21T14:54:00+03:00\"\n}",
@@ -392,27 +435,35 @@
                   "language": "json"
                 }
               }
-            },
-            "url": {
-              "raw": "{{WorkoutsRoute}}/start",
-              "host": [
-                "{{WorkoutsRoute}}"
-              ],
-              "path": [
-                "start"
-              ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Complete",
           "request": {
+            "method": "PATCH",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "PATCH",
-            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{WorkoutsRoute}}/complete?workoutId=1",
+              "protocol": "",
+              "host": [
+                "{{WorkoutsRoute}}"
+              ],
+              "path": [
+                "complete?workoutId=1"
+              ],
+              "query": [
+                {
+                  "key": "workoutId",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"DateTime\": \"2026-08-22T11:34:00+03:00\"\n}",
@@ -421,98 +472,88 @@
                   "language": "json"
                 }
               }
-            },
-            "url": {
-              "raw": "{{WorkoutsRoute}}/complete?workoutId=1",
-              "host": [
-                "{{WorkoutsRoute}}"
-              ],
-              "path": [
-                "complete"
-              ],
-              "query": [
-                {
-                  "key": "workoutId",
-                  "value": "1"
-                }
-              ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete",
           "request": {
+            "method": "DELETE",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "DELETE",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{WorkoutsRoute}}/delete?workoutId=1",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
-                "delete"
+                "delete?workoutId=1"
               ],
               "query": [
                 {
                   "key": "workoutId",
                   "value": "1"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "AddSessionExercise",
           "request": {
+            "method": "PATCH",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "PATCH",
-            "header": [],
+            "description": "",
             "url": {
-              "raw": "{{WorkoutsRoute}}/session-exercises/add?workoutId=1&exerciseId=14",
+              "raw": "{{WorkoutsRoute}}/session-exercises/add?workoutId=2&exerciseId=14",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
                 "session-exercises",
-                "add"
+                "add?workoutId=2&exerciseId=14"
               ],
               "query": [
                 {
                   "key": "workoutId",
-                  "value": "1"
+                  "value": "2"
                 },
                 {
                   "key": "exerciseId",
                   "value": "14"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "RemoveSessionExercise",
           "request": {
+            "method": "PATCH",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "PATCH",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{WorkoutsRoute}}/session-exercises/delete?workoutId=1&sessionId=1",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
                 "session-exercises",
-                "delete"
+                "delete?workoutId=1&sessionId=1"
               ],
               "query": [
                 {
@@ -523,36 +564,29 @@
                   "key": "sessionId",
                   "value": "1"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "AddSet",
           "request": {
+            "method": "PATCH",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"Weight\": 50,\n  \"Reps\": 12\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "description": "",
             "url": {
               "raw": "{{WorkoutsRoute}}/sets/add?workoutId=1&sessionId=2",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
                 "sets",
-                "add"
+                "add?workoutId=1&sessionId=2"
               ],
               "query": [
                 {
@@ -563,27 +597,38 @@
                   "key": "sessionId",
                   "value": "2"
                 }
-              ]
+              ],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Weight\": 50,\n  \"Reps\": 12\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "DeleteSet",
           "request": {
+            "method": "PATCH",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "PATCH",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{WorkoutsRoute}}/sets/delete?workoutId=1&setId=3",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
                 "sets",
-                "delete"
+                "delete?workoutId=1&setId=3"
               ],
               "query": [
                 {
@@ -594,36 +639,29 @@
                   "key": "setId",
                   "value": "3"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "UpdateSet",
           "request": {
+            "method": "PATCH",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"Weight\": 550,\n  \"Reps\": 12\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
+            "description": "",
             "url": {
               "raw": "{{WorkoutsRoute}}/sets/update?workoutId=1&setId=2",
+              "protocol": "",
               "host": [
                 "{{WorkoutsRoute}}"
               ],
               "path": [
                 "sets",
-                "update"
+                "update?workoutId=1&setId=2"
               ],
               "query": [
                 {
@@ -634,10 +672,51 @@
                   "key": "setId",
                   "value": "2"
                 }
-              ]
+              ],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Weight\": 550,\n  \"Reps\": 12\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "",
+            "url": {
+              "raw": "{{WorkoutsRoute}}/post",
+              "protocol": "",
+              "host": [
+                "{{WorkoutsRoute}}"
+              ],
+              "path": [
+                "post"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"StartTime\": \"2026-08-24T17:24:00+03:00\",\n  \"EndTime\": \"2026-08-24T17:24:00+03:00\",\n  \"SessionExercises\": [\n    {\n      \"ExerciseId\": 4,\n      \"Sets\": [\n        {\n          \"Weight\": 40,\n          \"Reps\": 12\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -647,58 +726,66 @@
         {
           "name": "GetAll",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{ExercisesRoute}}/get-all",
+              "protocol": "",
               "host": [
                 "{{ExercisesRoute}}"
               ],
               "path": [
                 "get-all"
-              ]
+              ],
+              "query": [],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "GetMuscleGroups",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{ExercisesRoute}}/get-muscle-groups",
+              "protocol": "",
               "host": [
                 "{{ExercisesRoute}}"
               ],
               "path": [
                 "get-muscle-groups"
-              ]
+              ],
+              "query": [],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "GetFiltered",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{ExercisesRoute}}/get-filtered?Name=curl&MuscleGroups=biceps",
+              "protocol": "",
               "host": [
                 "{{ExercisesRoute}}"
               ],
               "path": [
-                "get-filtered"
+                "get-filtered?Name=curl&MuscleGroups=biceps"
               ],
               "query": [
                 {
@@ -709,36 +796,38 @@
                   "key": "MuscleGroups",
                   "value": "biceps"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "GetById",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{ExercisesRoute}}/get-by-id?exerciseId=12",
+              "protocol": "",
               "host": [
                 "{{ExercisesRoute}}"
               ],
               "path": [
-                "get-by-id"
+                "get-by-id?exerciseId=12"
               ],
               "query": [
                 {
                   "key": "exerciseId",
                   "value": "12"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -748,31 +837,47 @@
         {
           "name": "GetAll",
           "request": {
+            "method": "GET",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "GET",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{TemplatesRoute}}/get-all",
+              "protocol": "",
               "host": [
                 "{{TemplatesRoute}}"
               ],
               "path": [
                 "get-all"
-              ]
+              ],
+              "query": [],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Post",
           "request": {
+            "method": "POST",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "POST",
-            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{TemplatesRoute}}/post",
+              "protocol": "",
+              "host": [
+                "{{TemplatesRoute}}"
+              ],
+              "path": [
+                "post"
+              ],
+              "query": [],
+              "variable": []
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"Name\": \"Training\",\n  \"ExerciseIds\": [\n    12,\n    14,\n    15\n  ]\n}",
@@ -781,53 +886,63 @@
                   "language": "json"
                 }
               }
-            },
-            "url": {
-              "raw": "{{TemplatesRoute}}/post",
-              "host": [
-                "{{TemplatesRoute}}"
-              ],
-              "path": [
-                "post"
-              ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete",
           "request": {
+            "method": "DELETE",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "DELETE",
-            "header": [],
+            "description": "",
             "url": {
               "raw": "{{TemplatesRoute}}/delete?templateId=1",
+              "protocol": "",
               "host": [
                 "{{TemplatesRoute}}"
               ],
               "path": [
-                "delete"
+                "delete?templateId=1"
               ],
               "query": [
                 {
                   "key": "templateId",
                   "value": "1"
                 }
-              ]
+              ],
+              "variable": []
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Update",
           "request": {
+            "method": "PATCH",
+            "header": [],
             "auth": {
               "type": "noauth"
             },
-            "method": "PATCH",
-            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{TemplatesRoute}}/update?templateId=1",
+              "protocol": "",
+              "host": [
+                "{{TemplatesRoute}}"
+              ],
+              "path": [
+                "update?templateId=1"
+              ],
+              "query": [
+                {
+                  "key": "templateId",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"Name\": \"Training 2\",\n  \"ExerciseIds\": [\n    17\n  ]\n}",
@@ -836,24 +951,8 @@
                   "language": "json"
                 }
               }
-            },
-            "url": {
-              "raw": "{{TemplatesRoute}}/update?templateId=1",
-              "host": [
-                "{{TemplatesRoute}}"
-              ],
-              "path": [
-                "update"
-              ],
-              "query": [
-                {
-                  "key": "templateId",
-                  "value": "1"
-                }
-              ]
             }
-          },
-          "response": []
+          }
         }
       ]
     }
@@ -861,23 +960,28 @@
   "variable": [
     {
       "key": "ExercisesRoute",
-      "value": "{{BaseRoute}}/exercises"
+      "value": "{{BaseRoute}}/exercises",
+      "type": "default"
     },
     {
       "key": "TemplatesRoute",
-      "value": "{{BaseRoute}}/templates"
+      "value": "{{BaseRoute}}/templates",
+      "type": "default"
     },
     {
       "key": "UsersRoute",
-      "value": "{{BaseRoute}}/users"
+      "value": "{{BaseRoute}}/users",
+      "type": "default"
     },
     {
       "key": "WorkoutsRoute",
-      "value": "{{BaseRoute}}/workouts"
+      "value": "{{BaseRoute}}/workouts",
+      "type": "default"
     },
     {
       "key": "BaseRoute",
-      "value": "http://localhost:5000"
+      "value": "http://localhost:5000",
+      "type": "default"
     }
   ]
 }

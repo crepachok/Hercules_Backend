@@ -5,6 +5,7 @@ public class WorkoutSearchFilterValidator : AbstractValidator<WorkoutSearchFilte
     public WorkoutSearchFilterValidator()
     {
         RuleFor(w => w.DateTo)
-            .Must((filter, dateTo) => filter.DateFrom == null || dateTo == null || dateTo >= filter.DateFrom);
+            .Must((filter, dateTo) => filter.DateFrom == null || dateTo == null || dateTo >= filter.DateFrom)
+                .WithMessage("Date to should be earlier than date from");
     }
 }
