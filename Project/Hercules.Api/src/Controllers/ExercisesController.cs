@@ -6,44 +6,46 @@ using Microsoft.AspNetCore.Mvc;
 [Route("/exercises")]
 public class ExercisesController : ControllerBase
 {
-    private readonly IExercisesRepository _eRepo;
-    private readonly IEntityRepository<MuscleGroupEntity> _mRepo;
-    public ExercisesController(IExercisesRepository eRepo, IEntityRepository<MuscleGroupEntity> mRepo)
-        => (_eRepo, _mRepo) = (eRepo, mRepo);
+    private readonly ExerciseService _service;
+    public ExercisesController(ExerciseService service) => _service = service;
 
     [HttpGet("get-all")]
     public async Task<IActionResult> GetAll()
     {
-        var exercises = await _eRepo.GetAll(100);
-        if (exercises is not { Length: > 0 }) return NotFound();
+        var result = await _service.GetAll();
+        if (result.IsFailure)
+            return this.HandleErrorResult(result);
 
-        return Ok(exercises.Select(e => e.ToResponse()));
+        return Ok(result.Value);
     }
 
     [HttpGet("get-muscle-groups")]
     public async Task<IActionResult> GetAllMuscleGroups()
     {
-        var muscles = await _mRepo.GetAll(100);
-        if (muscles is not { Length: > 0 }) return NotFound();
+        var result = await _service.GetAllMuscleGroups();
+        if (result.IsFailure)
+            return this.HandleErrorResult(result);
 
-        return Ok(muscles.Select(m => m.ToResponse()));
+        return Ok(result.Value);
     }
 
     [HttpGet("get-filtered")]
     public async Task<IActionResult> GetFiltered([FromQuery] ExerciseSearchFilter filter)
     {
-        var exercises = await _eRepo.GetFiltered(filter.Name, filter.MuscleGroups);
-        if (exercises is not { Length: > 0 }) return NotFound();
+        var result = await _service.GetFiltered(filter);
+        if (result.IsFailure)
+            return this.HandleErrorResult(result);
 
-        return Ok(exercises.Select(e => e.ToResponse()));
+        return Ok(result.Value);
     }
 
     [HttpGet("get-by-id")]
     public async Task<IActionResult> Get([FromQuery] int exerciseId)
     {
-        var exercise = await _eRepo.Get(exerciseId);
-        if (exercise == null) return NotFound();
+        var result = await _service.Get(exerciseId);
+        if (result.IsFailure)
+            return this.HandleErrorResult(result);
 
-        return Ok(exercise.ToResponse());
+        return Ok(result.Value);
     }
 }

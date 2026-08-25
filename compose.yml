@@ -13,6 +13,7 @@ services:
     restart: unless-stopped
     depends_on: 
       - hercules_psql
+      - hercules_redis
   
   hercules_psql:
     image: postgres
@@ -27,8 +28,16 @@ services:
       - hercules_net
     restart: unless-stopped
 
+  hercules_redis:
+    image: redis
+    container_name: hercules_redis
+    networks:
+      - hercules_net
+    restart: unless-stopped
+
 volumes:
   hercules_psql:
+    name: hercules_psql
 
 networks:
   hercules_net:

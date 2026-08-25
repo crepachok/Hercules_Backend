@@ -5,7 +5,9 @@ using System;
 internal class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
-    public ExceptionHandlingMiddleware(RequestDelegate next) => _next = next;
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+        => (_next, _logger) = (next, logger);
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -17,8 +19,9 @@ internal class ExceptionHandlingMiddleware
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsync(ex.Message);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         }
     }

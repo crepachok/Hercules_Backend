@@ -1,6 +1,7 @@
 using Scalar.AspNetCore;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +23,19 @@ if (string.IsNullOrEmpty(connString))
     throw new NullReferenceException("Cannot get connection string");
 
 builder.Services.AddAuth(jwtOptions);
-builder.Services.AddDbAndDependencies(connString);
+builder.Services.AddDbAndItsDependencies(connString);
 builder.Services.AddHasher();
+
+builder.Services.AddSingleton<ConnectionMultiplexer>(services =>
+{
+    return ConnectionMultiplexer.Connect("hercules_redis:6379");
+});
+builder.Services.AddSingleton<IDatabase>(services =>
+{
+    var connection = services.GetRequiredService<ConnectionMultiplexer>();
+
+    return connection.GetDatabase();
+});
 
 builder.Services.AddScoped<ICurrentUser, CurrentUserProvider>(p =>
 {
@@ -34,6 +46,7 @@ builder.Services.AddScoped<ICurrentUser, CurrentUserProvider>(p =>
 builder.Services.AddScoped<UsersService>();
 builder.Services.AddScoped<TemplateService>();
 builder.Services.AddScoped<WorkoutService>();
+builder.Services.AddScoped<ExerciseService>();
 
 builder.Services.AddFluentValidationAutoValidation()
     .AddValidatorsFromAssembly(typeof(UserCredentialsValidator).Assembly);

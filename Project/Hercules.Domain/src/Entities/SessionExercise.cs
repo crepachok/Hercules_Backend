@@ -5,7 +5,7 @@ public class SessionExerciseEntity : IEntityBase
     public WorkoutEntity Workout { get; private set;} = null!;
     public int ExerciseId { get; private set; }
     public ExerciseEntity Exercise { get; private set; } = null!;
-    public ICollection<SetEntity> Sets { get; set; } = [];
+    public ICollection<SetEntity> Sets { get; private set; } = [];
     public int Order { get; private set; }
 
     private SessionExerciseEntity() {}

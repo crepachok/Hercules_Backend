@@ -4,7 +4,7 @@ public class TemplateEntity : IEntityBase
     public int UserId { get; private set; }
     public UserEntity User { get; private set; } = null!;
     public string Name { get; private set; } = string.Empty;
-    public ICollection<ExerciseEntity> Exercises { get; set; } = [];
+    public ICollection<ExerciseEntity> Exercises { get; private set; } = [];
 
     public static string NameofExercises => nameof(Exercises);
 

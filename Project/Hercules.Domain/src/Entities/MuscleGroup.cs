@@ -1,8 +1,10 @@
+using System.Text.Json.Serialization;
+
 public class MuscleGroupEntity : IEntityBase
 {
-    public int Id { get; private set; }
+    [JsonInclude] public int Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
-    public ICollection<ExerciseEntity> Exercises { get; set; } = [];
+    [JsonIgnore] public ICollection<ExerciseEntity> Exercises { get; private set; } = [];
 
     public const int MinNameLength = 3;
     public const int MaxNameLength = 75;

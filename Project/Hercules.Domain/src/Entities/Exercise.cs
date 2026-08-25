@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 public class ExerciseEntity : IEntityBase
 {
-    public int Id { get; private set; }
+    [JsonInclude] public int Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public ICollection<MuscleGroupEntity> Muscles { get; private set; } = [];
     private ICollection<TemplateEntity> _templates{ get; set; } = [];

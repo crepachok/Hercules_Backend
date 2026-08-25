@@ -5,12 +5,8 @@ public class WorkoutEntity : IEntityBase
     public UserEntity User { get; private set; } = null!;
     public DateTime StartTime { get; private set; } = default;
     public DateTime? EndTime { get; private set; } = null;
-    public ICollection<SessionExerciseEntity> SessionExercises { get; set; } = [];
+    public ICollection<SessionExerciseEntity> SessionExercises { get; private set; } = [];
     public bool IsCompleted { get => EndTime.HasValue; }
-
-    public static string NameofSessionExercises => nameof(SessionExercises);
-    public static string NameofUser => nameof(User);
-
     private WorkoutEntity() { }
     public WorkoutEntity(int userId, DateTimeOffset startTime)
     {

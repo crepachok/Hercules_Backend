@@ -38,7 +38,7 @@ public static class InfrastructureExtensions
         //     });
         // });
     }
-    public static void AddDbAndDependencies(this IServiceCollection services, string connString)
+    public static void AddDbAndItsDependencies(this IServiceCollection services, string connString)
     {
         if (string.IsNullOrEmpty(connString))
             throw new InvalidOperationException("Infrastructure dependencies. Null connection string");

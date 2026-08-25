@@ -5,8 +5,8 @@ public class UserEntity : IEntityBase
     public string PasswordHash { get; private set; } = string.Empty;
     public DateTime RegistrationDate { get; private set; }
     public Privilege Privilege { get; private set; } = Privilege.User;
-    public ICollection<TemplateEntity> Templates { get; set; } = [];
-    public ICollection<WorkoutEntity> Workouts { get; set; } = [];
+    public ICollection<TemplateEntity> Templates { get; private set; } = [];
+    public ICollection<WorkoutEntity> Workouts { get; private set; } = [];
 
     public const int MinUsernameLength = 3;
     public const int MaxUsernameLength = 35;
