@@ -1,20 +1,4 @@
-services:
-  hercules_server:
-    build: .
-    image: hercules:v01
-    container_name: hercules_server
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:5000
-    ports:
-      - 5000:5000
-    networks: 
-      - hercules_net
-    restart: unless-stopped
-    depends_on: 
-      - hercules_psql
-      - hercules_redis
-  
+services:  
   hercules_psql:
     image: postgres
     container_name: hercules_psql
@@ -26,6 +10,8 @@ services:
       - POSTGRES_PASSWORD=7856pass7856
     networks: 
       - hercules_net
+    ports:
+      - 5434:5432
     restart: unless-stopped
 
   hercules_redis:
@@ -33,6 +19,8 @@ services:
     container_name: hercules_redis
     networks:
       - hercules_net
+    ports:
+      - 6379:6379
     restart: unless-stopped
 
 volumes:

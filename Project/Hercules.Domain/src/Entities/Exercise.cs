@@ -2,10 +2,10 @@ using System.Text.Json.Serialization;
 
 public class ExerciseEntity : IEntityBase
 {
-    [JsonInclude] public int Id { get; private set; }
-    public string Name { get; private set; } = string.Empty;
-    public ICollection<MuscleGroupEntity> Muscles { get; private set; } = [];
-    private ICollection<TemplateEntity> _templates{ get; set; } = [];
+    public int Id { get; init; }
+    [JsonInclude] public string Name { get; private set; } = string.Empty;
+    [JsonInclude] public ICollection<MuscleGroupEntity> Muscles { get; private set; } = [];
+    private ICollection<TemplateEntity> _templates { get; set; } = [];
     private ICollection<SessionExerciseEntity> _sessionExercises { get; set; } = [];
 
     public static string NameofTemplates => nameof(_templates);
@@ -19,7 +19,7 @@ public class ExerciseEntity : IEntityBase
         if (MinNameLength > MaxNameLength)
             throw new Exception("Exercise. MaxNameLength must be greater than MinNameLength");
     }
-    private ExerciseEntity() {}
+    [JsonConstructor] public ExerciseEntity() {}
     public ExerciseEntity(string name, ICollection<MuscleGroupEntity> muscles)
     {
         SetName(name);
@@ -59,7 +59,11 @@ public class ExerciseEntity : IEntityBase
         if (muscles is not { Count: > 0 })
             throw new DomainException("Exercise. Cannot set an empty set of Muscle Groups");
 
-        Muscles = muscles.DistinctBy(m => m.Name).ToList();
+        Muscles = muscles
+            .Where(m => m != null)
+            .DistinctBy(m => m.Name)
+            .ToList();
+
         return this;
     }
 }

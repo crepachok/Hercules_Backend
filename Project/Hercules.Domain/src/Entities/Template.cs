@@ -24,7 +24,7 @@ public class TemplateEntity : IEntityBase
         SetExercises(exercises);
     }
 
-    public void SetName(string name)
+    public TemplateEntity SetName(string name)
     {
         if (string.IsNullOrEmpty(name))
             throw new DomainException("Templates. Cannot set an empty name");
@@ -33,12 +33,18 @@ public class TemplateEntity : IEntityBase
             throw new DomainException($"Templates. Name length must be between {MinNameLength} and {MaxNameLength}");
 
         Name = name;
+        return this;
     }
-    public void SetExercises(ICollection<ExerciseEntity> exercises)
+    public TemplateEntity SetExercises(ICollection<ExerciseEntity> exercises)
     {
         if (exercises.Count() == 0)
             throw new DomainException("Template. Cannot set an empty set of exercises");
 
-        Exercises = exercises.DistinctBy(e => e.Id).ToList();
+        Exercises = exercises
+            .Where(e => e != null)
+            .DistinctBy(e => e.Id)
+            .ToList();
+            
+        return this;
     }
 }

@@ -30,8 +30,12 @@ public class UserEntity : IEntityBase
         SetRegTime(registrationDate);
     }
     
-    public void SetPasswordHash(string passwordHash) => PasswordHash = passwordHash;
-    public void SetUsername(string username)
+    public UserEntity SetPasswordHash(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+        return this;
+    }
+    public UserEntity SetUsername(string username)
     {
         if (string.IsNullOrEmpty(username))
             throw new DomainException("User. Cannot set an empty name");
@@ -40,8 +44,13 @@ public class UserEntity : IEntityBase
             throw new DomainException($"User. Username must be between {MinUsernameLength} and {MaxUsernameLength}");
 
         Username = username;
+        return this;
     }
-    public void SetPrivilege(Privilege privilege) => Privilege = privilege;
+    public UserEntity SetPrivilege(Privilege privilege)
+    {
+        Privilege = privilege;
+        return this;
+    }
     private void SetRegTime(DateTimeOffset time)
     {
         if (time < DateTimeOffset.UtcNow.AddMinutes(-3))

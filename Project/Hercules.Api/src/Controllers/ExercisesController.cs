@@ -9,43 +9,51 @@ public class ExercisesController : ControllerBase
     private readonly ExerciseService _service;
     public ExercisesController(ExerciseService service) => _service = service;
 
-    [HttpGet("get-all")]
-    public async Task<IActionResult> GetAll()
-    {
-        var result = await _service.GetAll();
-        if (result.IsFailure)
-            return this.HandleErrorResult(result);
+    [HttpGet("get-all/minimal")]
+    public async Task<IActionResult> GetAllMinimal([FromQuery] ExerciseSearchFilter filter)
+        => Ok(await _service.GetAll(e => e.ToMinimalResponse(), filter));
 
-        return Ok(result.Value);
-    }
+    [HttpGet("get-all/default")]
+    public async Task<IActionResult> GetAll([FromQuery] ExerciseSearchFilter filter)
+        => Ok(await _service.GetAll(e => e.ToResponse(), filter));
 
-    [HttpGet("get-muscle-groups")]
+    [HttpGet("get-all/detailed")]
+    public async Task<IActionResult> GetAllDetailed([FromQuery] ExerciseSearchFilter filter)
+        => Ok(await _service.GetAll(e => e.ToDetailedResponse(), filter));
+
+    [HttpGet("get-muscle-groups/minimal")]
+    public async Task<IActionResult> GetAllMuscleGroupsMinimal()
+        => Ok(await _service.GetAllMuscleGroups(m => m.ToMinimalResponse()));
+
+    [HttpGet("get-muscle-groups/default")]
     public async Task<IActionResult> GetAllMuscleGroups()
-    {
-        var result = await _service.GetAllMuscleGroups();
-        if (result.IsFailure)
-            return this.HandleErrorResult(result);
+        => Ok(await _service.GetAllMuscleGroups(m => m.ToResponse()));
 
-        return Ok(result.Value);
+    [HttpGet("get-muscle-groups/detailed")]
+    public async Task<IActionResult> GetAllMuscleGroupsDetailed()
+        => Ok(await _service.GetAllMuscleGroups(m => m.ToDetailedResponse()));
+
+    [HttpGet("get/minimal")]
+    public async Task<IActionResult> GetMinimal([FromQuery] int exerciseId)
+    {
+        var result = await _service.Get(exerciseId, e => e.ToMinimalResponse());
+
+        return result != null ? Ok(result) : NotFound($"No exercise with id: {exerciseId}");
     }
 
-    [HttpGet("get-filtered")]
-    public async Task<IActionResult> GetFiltered([FromQuery] ExerciseSearchFilter filter)
-    {
-        var result = await _service.GetFiltered(filter);
-        if (result.IsFailure)
-            return this.HandleErrorResult(result);
-
-        return Ok(result.Value);
-    }
-
-    [HttpGet("get-by-id")]
+    [HttpGet("get/default")]
     public async Task<IActionResult> Get([FromQuery] int exerciseId)
     {
-        var result = await _service.Get(exerciseId);
-        if (result.IsFailure)
-            return this.HandleErrorResult(result);
+        var result = await _service.Get(exerciseId, e => e.ToResponse());
 
-        return Ok(result.Value);
+        return result != null ? Ok(result) : NotFound($"No exercise with id: {exerciseId}");
+    }
+
+    [HttpGet("get/detailed")]
+    public async Task<IActionResult> GetDetailed([FromQuery] int exerciseId)
+    {
+        var result = await _service.Get(exerciseId, e => e.ToDetailedResponse());
+
+        return result != null ? Ok(result) : NotFound($"No exercise with id: {exerciseId}");
     }
 }

@@ -8,7 +8,7 @@ namespace Application;
 public class WorkoutServiceTests
 {
     private readonly Mock<IWorkoutsRepository> _wRepo;
-    private readonly Mock<IExercisesRepository> _eRepo;
+    private readonly Mock<IEntityRepository<ExerciseEntity>> _eRepo;
     private readonly Mock<ICurrentUser> _user;
     private readonly WorkoutService _service;
     private readonly ITestOutputHelper _output;

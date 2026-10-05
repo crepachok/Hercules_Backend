@@ -9,7 +9,7 @@ public class TemplateServiceTests
 {
     private  readonly ITestOutputHelper _output;
     private  readonly Mock<ITemplatesRepository> _tRepo;
-    private  readonly Mock<IExercisesRepository> _eRepo;
+    private  readonly Mock<IEntityRepository<ExerciseEntity>> _eRepo;
     private  readonly Mock<ICurrentUser> _user;
     private  readonly TemplateService _service;
     public TemplateServiceTests(ITestOutputHelper output)

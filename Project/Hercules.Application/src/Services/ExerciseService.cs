@@ -1,10 +1,11 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 public class ExerciseService : ServiceBase
 {
-    private readonly IExercisesRepository _eRepo;
+    private readonly IEntityRepository<ExerciseEntity> _eRepo;
     private readonly IEntityRepository<MuscleGroupEntity> _mRepo;
     private readonly IDatabase _redis;
     private readonly ILogger<ExerciseService> _logger;
@@ -12,7 +13,7 @@ public class ExerciseService : ServiceBase
     private const string _exercisesKey = "exercises:all";
     private const string _musclesKey = "musclegroups:all";
     private static bool WasInvalidated = false;
-    public ExerciseService(IExercisesRepository eRepo, IEntityRepository<MuscleGroupEntity> mRepo, IDatabase redis, ILogger<ExerciseService> logger, ICurrentUser user) : base(user)
+    public ExerciseService(IEntityRepository<ExerciseEntity> eRepo, IEntityRepository<MuscleGroupEntity> mRepo, IDatabase redis, ILogger<ExerciseService> logger, ICurrentUser user) : base(user)
     { 
         (_eRepo, _mRepo, _redis, _logger) = (eRepo, mRepo, redis, logger);
 
@@ -23,58 +24,60 @@ public class ExerciseService : ServiceBase
             WasInvalidated = true;
         }
     }
-    public async Task<Result<IEnumerable<ExerciseResponse>>> GetAll()
+    public async Task<IEnumerable<TResponse>> GetAll<TResponse>(Func<ExerciseEntity, TResponse> map, ExerciseSearchFilter? filter = null) where TResponse : class
     {
         var exercises = await GetCached(_exercisesKey, () => _eRepo.GetAll(1000));
-        if (exercises is not { Length: > 0 })
-            return Result<IEnumerable<ExerciseResponse>>.Failure(ErrorType.NotFound);
 
-        return Result<IEnumerable<ExerciseResponse>>
-            .Success(exercises.Select(e => e.ToResponse()));
+        if (filter != null)
+        {
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
+                exercises = exercises.Where(e => 
+                    e.Name.ToLowerInvariant()
+                    .Contains(filter.Name.ToLowerInvariant()))
+                    .ToArray();
+            }
+
+            if (filter.MuscleGroups is { Length: > 0 })
+            {
+                exercises = exercises.Where(e =>
+                {
+                    HashSet<string> exerciseMuscles = e.Muscles
+                        .Select(m => m.Name.ToLowerInvariant())
+                        .ToHashSet();
+
+                    return filter.MuscleGroups.All(m => exerciseMuscles.Contains(m.ToLowerInvariant()));
+                }).ToArray();
+            }
+        }
+
+        return exercises.Select(e => map(e));
     }
-    public async Task<Result<IEnumerable<MuscleGroupResponse>>> GetAllMuscleGroups()
+    public async Task<TResponse?> Get<TResponse>(int exerciseId, Func<ExerciseEntity, TResponse> map) where TResponse : class
+    {
+        var exercises = await GetCached(_exercisesKey, () => _eRepo.GetAll(1000));
+        var exercise = exercises.FirstOrDefault(e => e.Id == exerciseId);
+        
+        return exercise != null ? map(exercise) : null;
+    }
+    public async Task<IEnumerable<TResponse>> GetAllMuscleGroups<TResponse>(Func<MuscleGroupEntity, TResponse> map) where TResponse : class
     {
         var muscles = await GetCached(_musclesKey, () => _mRepo.GetAll(1000));
-        if (muscles is not { Length: > 0 })
-            return Result<IEnumerable<MuscleGroupResponse>>.Failure(ErrorType.NotFound);
 
-        return Result<IEnumerable<MuscleGroupResponse>>
-            .Success(muscles.Select(m => m.ToResponse()));
+        return muscles.Select(m => map(m));
     }
-    public async Task<Result<IEnumerable<ExerciseResponse>>> GetFiltered(ExerciseSearchFilter filter)
-    {
-        var exercises = await _eRepo.GetFiltered(filter.Name, filter.MuscleGroups);
-        if (exercises is not { Length: > 0 }) 
-            return Result<IEnumerable<ExerciseResponse>>.Failure(ErrorType.NotFound);
-
-        return Result<IEnumerable<ExerciseResponse>>
-            .Success(exercises.Select(e => e.ToResponse()));
-    }
-    public async Task<Result<ExerciseResponse>> Get(int exerciseId)
-    {
-        var exercises = await GetCached(_exercisesKey, () => _eRepo.GetAll(1000));
-        if (exercises is not { Length: > 0 })
-            return Result<ExerciseResponse>.Failure(ErrorType.NotFound, "Cannot find exercises");
-
-        var exercise = exercises.FirstOrDefault(e => e.Id == exerciseId);
-        if (exercise == null)
-            return Result<ExerciseResponse>.Failure(ErrorType.NotFound, $"No exercise with id: {exerciseId}");
-
-        return Result<ExerciseResponse>
-            .Success(exercise.ToResponse());
-    }
-    private async Task<T?> GetCached<T>(string key, Func<Task<T>> get)
+    private async Task<T> GetCached<T>(string key, Func<Task<T>> get)
     {
         string? cached = await _redis.StringGetAsync(key);
-        T? result; 
+        T result; 
 
         if (!string.IsNullOrEmpty(cached))
         {
             _logger.LogInformation($"Got cached: {cached}");
-            result = JsonSerializer.Deserialize<T>(cached);
+            result = JsonSerializer.Deserialize<T>(cached)!;
         } else {
             result = await get();
-            string json = JsonSerializer.Serialize(result);
+            string json = JsonSerializer.Serialize(result, new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles });
 
             await _redis.StringSetAsync(key, json, TimeSpan.FromMinutes(30));
         }

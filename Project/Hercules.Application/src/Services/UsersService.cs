@@ -1,4 +1,3 @@
-using System.Security.Claims;
 public sealed class UsersService : ServiceBase
 {
     private readonly IUsersRepository _uRepo;

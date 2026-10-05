@@ -1,16 +1,26 @@
 public sealed class TemplateService : ServiceBase
 {
     private readonly ITemplatesRepository _tRepo;
-    private readonly IExercisesRepository _eRepo;
-    public TemplateService(ITemplatesRepository tRepo, IExercisesRepository eRepo, ICurrentUser user) : base(user)
+    private readonly IEntityRepository<ExerciseEntity> _eRepo;
+    public TemplateService(ITemplatesRepository tRepo, IEntityRepository<ExerciseEntity> eRepo, ICurrentUser user) : base(user)
         => (_tRepo, _eRepo) = (tRepo, eRepo);
 
-    public async Task<TemplateResponse[]> GetUsersTemplates()
+    public async Task<IEnumerable<TResponse>> GetUsersTemplates<TResponse>(Func<TemplateEntity, TResponse> map) where TResponse : class
     {
         int userId = _user.UserId;
         var templates = await _tRepo.GetAll(userId);
 
-        return templates.Select(t => t.ToResponse()).ToArray();
+        return templates.Select(t => map(t));
+    }
+    public async Task<Result<TResponse>> Get<TResponse>(int templateId, Func<TemplateEntity, TResponse> map) where TResponse : class
+    {
+        int userId = _user.UserId;
+
+        var result = await CheckAccessAndGet(templateId, userId);
+        if (result.IsFailure)
+            return Result<TResponse>.Failure(result.ErrorType);
+
+        return Result<TResponse>.Success(map(result.Value));
     }
     public async Task<Result> Post(TemplateRequest request)
     {

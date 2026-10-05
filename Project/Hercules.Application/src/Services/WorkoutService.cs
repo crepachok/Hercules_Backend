@@ -1,12 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Reflection;
-
 public sealed class WorkoutService : ServiceBase
 {
     private readonly IWorkoutsRepository _wRepo;
-    private readonly IExercisesRepository _eRepo;
-    public WorkoutService(IWorkoutsRepository wRepo, IExercisesRepository eRepo, ICurrentUser user) : base(user)
+    private readonly IEntityRepository<ExerciseEntity> _eRepo;
+    public WorkoutService(IWorkoutsRepository wRepo, IEntityRepository<ExerciseEntity> eRepo, ICurrentUser user) : base(user)
         => (_wRepo, _eRepo) = (wRepo, eRepo);
 
     public async Task<WorkoutSummaryResponse[]> GetAll(int amount, int page)

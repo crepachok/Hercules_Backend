@@ -1,8 +1,8 @@
 public record MuscleGroupResponse
 {
     public int MuscleGroupId { get; init; }
-    public string Name {get; init; } = string.Empty;
-
-    public MuscleGroupResponse(int id, string name)
-        => (MuscleGroupId, Name) = (id, name);
+    public string Name { get; init; }
+    public IEnumerable<int> ExerciseIds { get; init; }
+    public MuscleGroupResponse(int id, string name, IEnumerable<int> exerciseIds)
+        => (MuscleGroupId, Name, ExerciseIds) = (id, name, exerciseIds);
 }

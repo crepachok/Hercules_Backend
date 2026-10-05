@@ -2,9 +2,9 @@ using System.Text.Json.Serialization;
 
 public class MuscleGroupEntity : IEntityBase
 {
-    [JsonInclude] public int Id { get; private set; }
-    public string Name { get; private set; } = string.Empty;
-    [JsonIgnore] public ICollection<ExerciseEntity> Exercises { get; private set; } = [];
+    public int Id { get; init; }
+    [JsonInclude] public string Name { get; private set; } = string.Empty;
+    [JsonInclude] public ICollection<ExerciseEntity> Exercises { get; private set; } = [];
 
     public const int MinNameLength = 3;
     public const int MaxNameLength = 75;
@@ -14,10 +14,10 @@ public class MuscleGroupEntity : IEntityBase
         if (MinNameLength > MaxNameLength)
             throw new Exception("MuscleGroup. MaxNameLength must be greater than MinNameLength");
     }
-    private MuscleGroupEntity() {}
+    [JsonConstructor] public MuscleGroupEntity() {}
     public MuscleGroupEntity(string name) => SetName(name);
 
-    public void SetName(string name)
+    public MuscleGroupEntity SetName(string name)
     {
         if (string.IsNullOrEmpty(name))
             throw new DomainException("MuscleGroup. Cannot set an empty name");
@@ -26,5 +26,6 @@ public class MuscleGroupEntity : IEntityBase
             throw new DomainException($"MuscleGroup. Name length must be between {MinNameLength} and {MaxNameLength}");
 
         Name = name;
+        return this;
     }
 }

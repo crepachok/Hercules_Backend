@@ -27,18 +27,20 @@ public class SetEntity : IEntityBase
         SetWeight(weight);
         SetReps(reps);
     }
-    internal void SetWeight(int weight)
+    internal SetEntity SetWeight(int weight)
     {
         if (!weight.IsBetween(MinWeight, MaxWeight))
             throw new DomainException($"Set. Wight must be between {MinWeight} and {MaxWeight}");
 
         Weight = weight;
+        return this;
     }
-    internal void SetReps(int reps)
+    internal SetEntity SetReps(int reps)
     {
         if (!reps.IsBetween(MinReps, MaxReps))
             throw new DomainException($"Set. Reps must be between {MinReps} and {MaxReps}");
 
         Reps = reps;
+        return this;
     }
 }

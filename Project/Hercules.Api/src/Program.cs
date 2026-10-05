@@ -18,7 +18,9 @@ var jwtOptions = jwtSection.Get<JwtOptions>();
 if (jwtOptions == default)
     throw new NullReferenceException("Cannot parse jwt options");
 
-string? connString = builder.Configuration.GetSection("ConnectionStrings")["psql"];
+string? connString = builder.Configuration.GetSection("ConnectionStrings")
+    [builder.Environment.IsDevelopment() ? "psql_debug" : "psql"];
+
 if (string.IsNullOrEmpty(connString))
     throw new NullReferenceException("Cannot get connection string");
 
@@ -28,7 +30,11 @@ builder.Services.AddHasher();
 
 builder.Services.AddSingleton<ConnectionMultiplexer>(services =>
 {
-    return ConnectionMultiplexer.Connect("hercules_redis:6379");
+    return Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") switch{
+        "Production" => ConnectionMultiplexer.Connect("hercules_redis:6379"),
+        "Development" => ConnectionMultiplexer.Connect("localhost:6379"),
+        _ => throw new Exception("Unrecognized ASP NET CORE Environment")
+    };
 });
 builder.Services.AddSingleton<IDatabase>(services =>
 {

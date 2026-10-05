@@ -1,11 +1,15 @@
 public static class TemplateMapper
 {
+    public static TemplateMinimalResponse ToMinimalResponse(this TemplateEntity template)
+    {
+        return new(template.Id, template.Name);
+    }
     public static TemplateResponse ToResponse(this TemplateEntity template)
     {
-        if(template.Exercises is not { Count: > 0}) 
-            throw new ArgumentException($"Template id: {template.Id} does not contain exercises");
-
-        var response = new TemplateResponse(template.Id, template.Name, template.Exercises.Select(e => e.Id).ToArray());
-        return response;
+        return new(template.Id, template.Name, template.Exercises.Select(e => e.Id));
+    }
+    public static TemplateDetailedResponse ToDetailedResponse(this TemplateEntity template)
+    {
+        return new(template.Id, template.Name, template.Exercises.Select(e => e.ToMinimalResponse()));
     }
 }   

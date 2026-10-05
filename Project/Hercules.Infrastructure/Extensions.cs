@@ -52,7 +52,6 @@ public static class InfrastructureExtensions
         services.AddScoped<QueryBuilder<WorkoutEntity>, WorkoutQueryBuilder>();
 
         services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
-        services.AddScoped<IExercisesRepository, ExercisesRepository>();
         services.AddScoped<ITemplatesRepository, TemplatesRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<IWorkoutsRepository, WorkoutsRepository>();
