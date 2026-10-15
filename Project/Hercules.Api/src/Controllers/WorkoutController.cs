@@ -9,22 +9,36 @@ public class WorkoutsController : ControllerBase
     private readonly WorkoutService _wService;
     public WorkoutsController(WorkoutService wService) => _wService = wService;
 
-    [HttpGet("get-all")]
-    public async Task<IActionResult> GetAll([FromQuery] int amount = 100, [FromQuery] int page = 0)
+    [HttpGet("get-all/detailed")]
+    public async Task<IActionResult> GetAllDetailed([FromQuery] int amount = 100, [FromQuery] int page = 0)
+        => Ok(await _wService.GetAll(amount, page, (w) => w.ToDetailedDTO()));
+
+    [HttpGet("get-all/summary")]
+    public async Task<IActionResult> GetAllSummary([FromQuery] int amount = 100, [FromQuery] int page = 0)
+        => Ok(await _wService.GetAll(amount, page, (w) => w.ToSummaryDTO()));        
+
+    [HttpGet("get-all-filtered/detailed")]
+    public async Task<IActionResult> GetAllFilteredDetailed([FromQuery] WorkoutSearchFilter filter)
+        => Ok(await _wService.GetAllFiltered(filter, (w) => w.ToDetailedDTO()));
+
+    [HttpGet("get-all-filtered/summary")]
+    public async Task<IActionResult> GetAllFilteredSummary([FromQuery] WorkoutSearchFilter filter)
+        => Ok(await _wService.GetAllFiltered(filter, (w) => w.ToSummaryDTO()));
+
+    [HttpGet("get/detailed")]
+    public async Task<IActionResult> GetDetailed([FromQuery] int workoutId)
     {
-        return Ok(await _wService.GetAll(amount, page));
+        var result = await _wService.Get(workoutId, (w) => w.ToDetailedDTO());
+        if (result.IsFailure)
+            return this.HandleErrorResult(result);
+
+        return Ok(result.Value);
     }
 
-    [HttpGet("get-all-filtered")]
-    public async Task<IActionResult> GetAllFiltered([FromQuery] WorkoutSearchFilter filter)
+    [HttpGet("get/summary")]
+    public async Task<IActionResult> GetSummary([FromQuery] int workoutId)
     {
-        return Ok(await _wService.GetAllFiltered(filter));
-    }
-
-    [HttpGet("get")]
-    public async Task<IActionResult> Get([FromQuery] int workoutId)
-    {
-        var result = await _wService.Get(workoutId);
+        var result = await _wService.Get(workoutId, (w) => w.ToSummaryDTO());
         if (result.IsFailure)
             return this.HandleErrorResult(result);
 

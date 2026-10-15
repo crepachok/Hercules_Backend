@@ -43,7 +43,7 @@ public class WorkoutIntegrationTests : IClassFixture<IntegrationTestsFixture>
         //Assert
         startResponce.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        var getRequest = new HttpRequestMessage(HttpMethod.Get, "/workouts/get-all");
+        var getRequest = new HttpRequestMessage(HttpMethod.Get, "/workouts/get-all/summary");
         getRequest.Headers.Authorization = new ("Bearer", token);
 
         var getResponce = await _http.SendAsync(getRequest);

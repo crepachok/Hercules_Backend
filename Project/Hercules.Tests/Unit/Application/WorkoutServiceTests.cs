@@ -22,7 +22,7 @@ public class WorkoutServiceTests
     [Fact]
     public async Task Get_UnexistentWorkout_ReturnsNotFound()
     {
-        var result = await _service.Get(1);
+        var result = await _service.Get(1, (w) => w.ToDetailedDTO());
 
         result.IsFailure.Should().BeTrue();
         result.ErrorType.Should().Be(ErrorType.NotFound);
@@ -37,7 +37,7 @@ public class WorkoutServiceTests
         _user.Setup(u => u.UserId)
             .Returns(2);
         
-        var result = await _service.Get(1);
+        var result = await _service.Get(1, (w) => w.ToDetailedDTO());
 
         result.IsFailure.Should().BeTrue();
         result.ErrorType.Should().Be(ErrorType.Forbidden);
@@ -52,7 +52,7 @@ public class WorkoutServiceTests
         _user.Setup(u => u.UserId)
             .Returns(1);
         
-        var result = await _service.Get(1);
+        var result = await _service.Get(1, (w) => w.ToDetailedDTO());
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();

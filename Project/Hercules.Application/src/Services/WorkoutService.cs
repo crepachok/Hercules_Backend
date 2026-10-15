@@ -5,27 +5,27 @@ public sealed class WorkoutService : ServiceBase
     public WorkoutService(IWorkoutsRepository wRepo, IEntityRepository<ExerciseEntity> eRepo, ICurrentUser user) : base(user)
         => (_wRepo, _eRepo) = (wRepo, eRepo);
 
-    public async Task<WorkoutSummaryResponse[]> GetAll(int amount, int page)
+    public async Task<TResponse[]> GetAll<TResponse>(int amount, int page, Func<WorkoutEntity, TResponse> map)
     {
         int userId = _user.UserId;
 
         var workouts = await _wRepo.GetAll(userId, amount, page);
-        return workouts.Select(w => w.ToSummaryDTO()).ToArray();
+        return workouts.Select(w => map(w)).ToArray();
     }
-    public async Task<WorkoutSummaryResponse[]> GetAllFiltered(WorkoutSearchFilter filter)
+    public async Task<TResponse[]> GetAllFiltered<TResponse>(WorkoutSearchFilter filter, Func<WorkoutEntity, TResponse> map)
     {
         int userId = _user.UserId;
 
         var workouts = await _wRepo.GetAllFiltered(userId, filter);
-        return workouts.Select(w => w.ToSummaryDTO()).ToArray();
+        return workouts.Select(w => map(w)).ToArray();
     }
-    public async Task<Result<WorkoutDetailedResponse>> Get(int id)
+    public async Task<Result<TResponse>> Get<TResponse>(int id, Func<WorkoutEntity, TResponse> map)
     {
         var accessResult = await CheckAccessAndGet(id);
         if (accessResult.IsFailure)
-            return Result<WorkoutDetailedResponse>.Failure(accessResult.ErrorType);
+            return Result<TResponse>.Failure(accessResult.ErrorType);
 
-        return Result<WorkoutDetailedResponse>.Success(accessResult.Value.ToDetailedDTO());
+        return Result<TResponse>.Success(map(accessResult.Value));
     }
     public async Task Start(DateTimeRequest time)
     {
